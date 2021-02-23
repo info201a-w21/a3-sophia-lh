@@ -1,17 +1,55 @@
 
 # Setup -------------------------------------------------------------------
+library("usdata")
 library("ggplot2") 
 library(dplyr)
 library(tidyverse)
+library(maps)
 
 all_data <- read.csv("incarceration_trends.csv")
 
 
 # Introduction + Summary --------------------------------------------------
+  # What state is the average black prison population rate the highest in?
+    highest_state <- all_data %>% 
+      group_by(state) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      filter(avg_black_rate == max(avg_black_rate, na.rm =T)) %>% 
+      pull(state)
+  
+  # What county is the average black prison population rate the highest in?
+    highest_county <- all_data %>% 
+      group_by(county_name) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      filter(avg_black_rate == max(avg_black_rate, na.rm =T)) %>% 
+      pull(county_name)
 
-  # Include at least 5 relevant values of interest
-
-
+  # What state is the average black prison population rate the lowest in?
+    lowest_state <- all_data %>% 
+      group_by(state) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      filter(avg_black_rate == min(avg_black_rate, na.rm =T)) %>% 
+      pull(state)
+    
+  # What is the average value of the black prison population across all states?
+    avg_rate <- all_data %>% 
+      #group_by(state) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      pull(sum(avg_black_rate)/length(avg_black_rate))
+    
+  # How much has the average black prison population rate changed over the last 20 years?
+    avg_rate_1996 <- all_data %>% 
+      filter(year == 1996) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      pull(sum(avg_black_rate)/length(avg_black_rate))
+    
+    avg_rate_2016 <- all_data %>% 
+      filter(year == 2016) %>% 
+      summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T)) %>% 
+      pull(sum(avg_black_rate)/length(avg_black_rate))
+    
+  change_rate <- avg_rate_2016 - avg_rate_1996
+    
 # Trends over time chart --------------------------------------------------
 
 # compare prison population rates in: 
@@ -54,7 +92,27 @@ ggplot(prison_comp, aes(x=year))+
   
 
 # Map ---------------------------------------------------------------------
+shapefile <- map_data("state")
 
+# compare AVERAGE black prison population rate across states
+
+state_data <- all_data %>% 
+  #filter(year == max(year)) %>% 
+  group_by(state) %>% 
+  summarize(avg_black_rate = mean(black_prison_pop_rate, na.rm = T))
+
+
+shapefile <- shapefile %>% 
+  mutate(state = state2abbr(region)) %>% 
+  left_join(state_data, by = "state")
   
+  
+shapefile %>% 
+  ggplot(aes(long, lat, group = group, fill = avg_black_rate.x)) +
+  geom_polygon(color = NA) +
+  labs(fill = "Average Rate")+
+  ggtitle("Average Rates of Black Population Imprisoned by State")+
+  theme_minimal()
+
 
   
