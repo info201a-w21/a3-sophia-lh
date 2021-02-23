@@ -60,7 +60,7 @@ prison_trends <- all_data %>%
   select(year,aapi_prison_pop_rate, black_prison_pop_rate, latinx_prison_pop_rate, native_prison_pop_rate, white_prison_pop_rate) %>% 
   drop_na()
 
-ggplot(prison_trends, aes(x=year)) + 
+  trends <- ggplot(prison_trends, aes(x=year)) + 
   geom_smooth(aes(y= aapi_prison_pop_rate, color = "Asian American/Pacific Islander")) + 
   geom_smooth(aes(y= black_prison_pop_rate, color = "Black")) +
   geom_smooth(aes(y= latinx_prison_pop_rate, color = "Latinx")) +
@@ -82,7 +82,7 @@ prison_comp <- all_data %>%
   select(year, total_prison_pop_rate, black_prison_pop_rate)
   drop_na()
   
-ggplot(prison_comp, aes(x=year))+
+comp <- ggplot(prison_comp, aes(x=year))+
   xlim(1990, NA)+
   geom_smooth(aes(y= total_prison_pop_rate, color = "Total Prison Population Rate")) + 
   geom_smooth(aes(y= black_prison_pop_rate, color = "Black Prison Population Rate"))+
@@ -107,7 +107,7 @@ shapefile <- shapefile %>%
   left_join(state_data, by = "state")
   
   
-shapefile %>% 
+map <- shapefile %>% 
   ggplot(aes(long, lat, group = group, fill = avg_black_rate.x)) +
   geom_polygon(color = NA) +
   labs(fill = "Average Rate")+

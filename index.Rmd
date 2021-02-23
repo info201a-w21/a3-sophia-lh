@@ -3,7 +3,7 @@ title: "An Analysis of Prison Population Rates"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 source("analysis.R")
 ```
 
@@ -11,4 +11,24 @@ source("analysis.R")
 The systemic oppression of minorities, particularly African Americans, in the American prison system continues to be exposed through effective data analytics. This report seeks to analyze prison population rates, both across racial groups and states. In this report, I primarily work with variables related to prison population rates. The total prison population rate variable is based on the number of people held in state prison on December 31 of a given year in relation to the total population of the county of commitment. Similarly, this variable can be disaggreated to express the rate that specific racial groups are committed to state prisons.
 In generating this report, several values of interest emerged. First, the state with the highest average rate of Black imprisonment is Nebraska. Furthermore, the county with the highest average rate of Black imprisonment is McPherson County, also located in Nebraska. The state with the lowest average rate of Black imprisonment was found to be Hawaii. Across all states, the average rate of Black imprisonment was calculated to be approximately 2785.15. Comparing this national average across a 10 year period, from 1996 to 2016, revealed an increase of 115.27.
 
+**This is a chart showing trends in prison population rates across six different racial groups.**
 
+```{r, echo = FALSE, message = FALSE}
+trends
+```
+This chart was intended to show the influence of race on rate of imprisonment. The overwhelming discrepancy between the rate of imprisonment for Black individuals and nearly every other race is one of, if not the most, meaningful patterns that emerged.
+
+**This is a chart comparing the rate of Black imprisonment to the total rate of imprisonment across all six observed races.**
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+comp
+```
+Building off of the previous chart, this chart was intended to highlight the significant difference in rate that the Black population is imprisoned in relation to all other racial groups. In a literal sense, this chart visualizes the overwhelming racial gap observed in state prisons. While fluctuating, the black prison population rate is always more than two times larger than the total prison population rate--and sometimes nearly three times larger!
+
+**This is a map comparing the average black prison population rate across all states.**
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+map
+```
+This chart was intended to illustrate the influence of geographic location on average rates of black population imprisonment. In constructing this graphic, I chose to include states with no reported data. In doing so, I hope their lack of available information and transparency does not go unnoticed. In terms of patterns, this chart reveals generally lower rates of imprisonment in coastal states compared to states in the southern and central U.S.
