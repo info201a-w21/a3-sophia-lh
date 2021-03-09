@@ -5,6 +5,7 @@ library("ggplot2")
 library(dplyr)
 library(tidyverse)
 library(maps)
+library(knitr)
 
 all_data <- read.csv("incarceration_trends.csv")
 
@@ -57,8 +58,10 @@ all_data <- read.csv("incarceration_trends.csv")
 
 
 prison_trends <- all_data %>% 
-  select(year,aapi_prison_pop_rate, black_prison_pop_rate, latinx_prison_pop_rate, native_prison_pop_rate, white_prison_pop_rate) %>% 
-  drop_na()
+  select(year,aapi_prison_pop_rate, black_prison_pop_rate, latinx_prison_pop_rate, native_prison_pop_rate, white_prison_pop_rate) 
+
+prison_trends <- drop_na(prison_trends)
+  
 
   trends <- ggplot(prison_trends, aes(x=year)) + 
   geom_smooth(aes(y= aapi_prison_pop_rate, color = "Asian American/Pacific Islander")) + 
@@ -80,7 +83,8 @@ prison_trends <- all_data %>%
 
 prison_comp <- all_data %>% 
   select(year, total_prison_pop_rate, black_prison_pop_rate)
-  drop_na()
+
+prison_comp <- drop_na(prison_comp)
   
 comp <- ggplot(prison_comp, aes(x=year))+
   xlim(1990, NA)+
@@ -108,7 +112,7 @@ shapefile <- shapefile %>%
   
   
 map <- shapefile %>% 
-  ggplot(aes(long, lat, group = group, fill = avg_black_rate.x)) +
+  ggplot(aes(long, lat, group = group, fill = avg_black_rate)) +
   geom_polygon(color = NA) +
   labs(fill = "Average Rate")+
   ggtitle("Average Rates of Black Population Imprisoned by State")+
